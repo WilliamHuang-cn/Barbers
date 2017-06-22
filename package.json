@@ -1,0 +1,7 @@
+{
+    "name": "barvers",
+    "version": "0.0.1",
+    "description": "Web service for barber's based on WeChat.",
+    "dependencies": {
+    }
+}
