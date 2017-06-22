@@ -1,10 +1,9 @@
-var pm = require('../lib/post_menu');
-var getToken = require('../lib/get_access_token');
+var weChat = require('../lib/weChatAPI');
 
 exports.postMenuSuccess_test = function (test) {
     test.expect(1);
-    getToken.getAccessToken((err, token) => {
-        pm.postMenu(token,(err) => {
+    weChat.getAccessToken((err, token) => {
+        weChat.postMenu(token,(err) => {
             test.doesNotThrow(err,Error,'Should not have error from WeChat server.');
             test.done();
         });
@@ -13,7 +12,7 @@ exports.postMenuSuccess_test = function (test) {
 
 exports.postMenuFail_cridential_test = function (test) {
     test.expect(1);
-    pm.postMenu('asdf',(err) => {
+    weChat.postMenu('758Fu9V',(err) => {
         test.throws(() => {throw err},/invalid/,'Should receive error from WeChat server.');
         test.done();
     });
