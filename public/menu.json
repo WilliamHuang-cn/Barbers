@@ -1,9 +1,27 @@
 {
      "button":[
      {
-          "type":"click",
-          "name":"今日歌曲",
-          "key":"V1001_TODAY_MUSIC"
+          "name":"我要理发💈",
+          "sub_button":[{
+             "type":"click",
+             "name":"剪",
+             "key":"V1001_GOOD"
+          },
+          {
+             "type":"click",
+             "name":"洗",
+             "key":"V1001_GOOD"
+          },
+          {
+             "type":"click",
+             "name":"吹",
+             "key":"V1001_GOOD"
+          },
+          {
+             "type":"click",
+             "name":"烫",
+             "key":"V1001_GOOD"
+          }]
       },
       {
            "name":"菜单",
