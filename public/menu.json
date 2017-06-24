@@ -5,22 +5,22 @@
           "sub_button":[{
              "type":"click",
              "name":"剪",
-             "key":"V1001_GOOD"
+             "key":"V1001_CUT"
           },
           {
              "type":"click",
              "name":"洗",
-             "key":"V1001_GOOD"
+             "key":"V1001_WASH"
           },
           {
              "type":"click",
              "name":"吹",
-             "key":"V1001_GOOD"
+             "key":"V1001_BLOW_DRY"
           },
           {
              "type":"click",
              "name":"烫",
-             "key":"V1001_GOOD"
+             "key":"V1001_PERM_WAVE"
           }]
       },
       {
@@ -28,8 +28,8 @@
            "sub_button":[
             {
                "type":"click",
-               "name":"赞一下我们",
-               "key":"V1001_GOOD"
+               "name":"队伍查询",
+               "key":"V1001_QUEUE_QUERY"
             }]
        }]
  }
