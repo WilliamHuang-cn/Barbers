@@ -1,0 +1,20 @@
+{
+     "button":[
+     {
+          "name":"我要理发💈",
+          "type":"view",
+          "url":"http://47.92.109.146:80"
+      },
+      {
+           "name":"菜单",
+           "sub_button":[
+            {
+               "type":"click",
+               "name":"队伍查询",
+               "key":"V1001_QUEUE_QUERY"
+            }]
+       }],
+       "matchrule":{
+           "language":"zh_CN"
+       }
+ }
