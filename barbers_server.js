@@ -11,76 +11,35 @@ api.getAccessToken((err,token) => {
     }});
 });
 
-// var server = http.createServer((req,res) => {
-//     // var url = qs.parse(req.url);
-//     // console.log(url);
-//
-//     var body = '';
-//     req.on('data', (chunck) => {
-//         body += chunck;
-//     });
-//     req.on('end', () => {
-//       var parseString = require("xml2js").parseString;
-//       parseString(body, function (err, data) {
-//         if(!err){
-//           console.log(data);
-//           if (data == null || data.xml == undefined) {
-//               return;
-//           }
-//           data = data.xml;              // Remove xml layer
-//           switch (data.MsgType[0]) {
-//               case 'event':
-//                 //   console.log('An event is received;');
-//                   switch (data.Event[0]) {
-//                       case 'CLICK':
-//                           clickEventHandler(data,res);
-//                           break;
-//                       default:
-//                       res.end('success');
-//                   }
-//                   break;
-//               case 'text':
-//                   console.log('A text is received.');
-//                   res.end('success');
-//                   break;
-//               default:
-//                   console.log('Unknown type received: '+data.xml.MsgType[0]);
-//                   res.end('success');
-//           }
-//         }
-//       });
-//     });
-// });
-
 var server = connect();
 server.use((req,res,next) => {
-    console.log('%s %s', req.method, req.url);
-    // console.log(req.headers)
+    console.log('%s %s', req.method, req.url+'\n');
+    console.log(req.headers);
     next();
 });
 var bodyParser = require('body-parser');
 server.use(bodyParser.text({'type':'text/*'}));
-// Deal with WeChat message/event call
+
 server.use((req,res,next) => {
-    if (req.method == 'post' && req.url == '/' && req.headers['content-type'] == 'text/xml') {
+    console.log(req.body+'\n');
+    next();
+});
+
+// Deal with WeChat message/event call
+server.use('/', (req,res,next) => {
+    // if (req.method == 'POST' && req.url == '/' && req.headers['content-type'] == 'text/xml') {
+    if (req.method == 'POST' && req.headers['content-type'] == 'text/xml') {
+
         var parseString = require("xml2js").parseString;
-        parseString(body, function (err, data) {
+        parseString(req.body, function (err, data) {
             if(!err){
-                console.log(data);
             if (data == null || data.xml == undefined) {
                 return;
             }
               data = data.xml;              // Remove xml layer
               switch (data.MsgType[0]) {
                   case 'event':
-                    //   console.log('An event is received;');
-                      switch (data.Event[0]) {
-                          case 'CLICK':
-                              clickEventHandler(data,res);
-                              break;
-                          default:
-                          res.end('success');
-                      }
+                      eventSwitch(data,res);
                       break;
                   case 'text':
                       console.log('A text is received.');
@@ -91,23 +50,39 @@ server.use((req,res,next) => {
                       res.end('success');
               }
             }
+        });
+    }
+    else {
+        next();
     }
 });
 
 // Deal with web service
 server.use('/add_to_queue',(req,res,next) => {
-    if (req.method == 'post' && req.body != null) {
-
+    if (req.method == 'GET') {
+        var stream = require('fs').createReadStream('./public/reigster.html');
+        stream.pipe(res);
+        res.end();
     }
-});
-
-server.use((req,res,next) => {
-    console.log(req.body);
+    if (req.method == 'POST' && req.body != null) {
+        console.log('Request for adding customer to queue. ');
+        res.end();
+    }
 });
 
 server.listen(80, () => {
     console.log('Server running on port 80.');
 });
+
+function eventSwitch(data,res) {
+    switch (data.Event[0]) {
+        case 'CLICK':
+            clickEventHandler(data,res);
+            break;
+        default:
+        res.end('success');
+    }
+}
 
 function clickEventHandler(data,res) {
     switch (data.EventKey[0]) {
