@@ -5,6 +5,8 @@ var connect = require('connect');
 var util = require('util');
 var queue = require('./lib/barberQueue');
 
+var tempID = '';
+
 api.getAccessToken((err,token) => {
     api.postMenu(token,'./public/CustomMenu.json',(err) => {
     if (err != null) {
@@ -19,6 +21,48 @@ server.use((req,res,next) => {
     next();
 });
 var bodyParser = require('body-parser');
+
+server.use('/add_to_queue',bodyParser.urlencoded());
+server.use('/add_to_queue',(req,res,next) => {
+    console.log(req.body);
+    next();
+});
+// Deal with web service
+server.use('/add_to_queue',(req,res,next) => {
+    if (req.method == 'GET') {
+        res.setHeader('content-type','text/html');
+        var stream = require('fs').createReadStream('./public/register.html');
+        stream.pipe(res);
+        stream.on('error', (err) => console.log(err));
+    }
+    if (req.method == 'POST' && req.body != null) {
+        api.getAccessToken((err,token) => {
+            console.log(tempID);
+            api.fetchUserInfo(token,'',tempID,(err,data) => {
+                if (err != null || data == null || data == undefined) {
+                    console.log('Error feteching user info: '+err);
+                }
+                else {
+                    queue.addCustomerToQueue({
+                        'nickname':data.nickname,
+                        'openID':data.openid,
+                        'serviceType':req.body.serviceType,
+                        'estimatedTime':50
+                    },(err)=>{});
+                }
+                res.end();
+                next();
+            });
+        });
+    }
+});
+
+server.use('/stylesheets',(req,res,next) => {
+    var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
+    stream.pipe(res);
+    stream.on('error', (err) => console.log(err));
+});
+
 server.use('/',bodyParser.text({'type':'text/*'}));
 
 server.use('/',(req,res,next) => {
@@ -58,35 +102,6 @@ server.use('/', (req,res,next) => {
     }
 });
 
-server.use('/add_to_queue',bodyParser.urlencoded());
-server.use('/add_to_queue',(req,res,next) => {
-    console.log(req.body);
-    next();
-});
-// Deal with web service
-server.use('/add_to_queue',(req,res,next) => {
-    if (req.method == 'GET') {
-        res.setHeader('content-type','text/html');
-        var stream = require('fs').createReadStream('./public/register.html');
-        stream.pipe(res);
-        stream.on('error', (err) => console.log(err));
-    }
-    if (req.method == 'POST' && req.body != null) {
-        console.log('Request for adding customer to queue. ');
-
-
-        queue.addCustomerToQueue({},()=>{});
-        res.end();
-        next();
-    }
-});
-
-server.use('/stylesheets',(req,res,next) => {
-    var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
-    stream.pipe(res);
-    stream.on('error', (err) => console.log(err));
-});
-
 server.listen(80, () => {
     console.log('Server running on port 80.');
 });
@@ -95,6 +110,9 @@ function eventSwitch(data,res) {
     switch (data.Event[0]) {
         case 'CLICK':
             clickEventHandler(data,res);
+            break;
+        case 'VIEW':
+            viewEventHandler(data,res);
             break;
         default:
         res.end('success');
@@ -119,4 +137,9 @@ function clickEventHandler(data,res) {
         default:
             res.end('success');
     }
+}
+
+function viewEventHandler(data,res) {
+    tempID = data.FromUserName[0];
+    res.end();
 }
