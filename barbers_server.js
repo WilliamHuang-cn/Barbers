@@ -3,6 +3,7 @@ var qs = require('querystring');
 var api = require('./lib/weChatAPI');
 var connect = require('connect');
 var util = require('util');
+var queue = require('./lib/barberQueue');
 
 api.getAccessToken((err,token) => {
     api.postMenu(token,'./public/CustomMenu.json',(err) => {
@@ -13,15 +14,15 @@ api.getAccessToken((err,token) => {
 
 var server = connect();
 server.use((req,res,next) => {
-    console.log('%s %s', req.method, req.url+'\n');
+    console.log('%s %s', req.method, req.url+'\r\n');
     console.log(req.headers);
     next();
 });
 var bodyParser = require('body-parser');
-server.use(bodyParser.text({'type':'text/*'}));
+server.use('/',bodyParser.text({'type':'text/*'}));
 
-server.use((req,res,next) => {
-    console.log(req.body+'\n');
+server.use('/',(req,res,next) => {
+    console.log(req.body);
     next();
 });
 
@@ -57,17 +58,33 @@ server.use('/', (req,res,next) => {
     }
 });
 
+server.use('/add_to_queue',bodyParser.urlencoded());
+server.use('/add_to_queue',(req,res,next) => {
+    console.log(req.body);
+    next();
+});
 // Deal with web service
 server.use('/add_to_queue',(req,res,next) => {
     if (req.method == 'GET') {
-        var stream = require('fs').createReadStream('./public/reigster.html');
+        res.setHeader('content-type','text/html');
+        var stream = require('fs').createReadStream('./public/register.html');
         stream.pipe(res);
-        res.end();
+        stream.on('error', (err) => console.log(err));
     }
     if (req.method == 'POST' && req.body != null) {
         console.log('Request for adding customer to queue. ');
+
+
+        queue.addCustomerToQueue({},()=>{});
         res.end();
+        next();
     }
+});
+
+server.use('/stylesheets',(req,res,next) => {
+    var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
+    stream.pipe(res);
+    stream.on('error', (err) => console.log(err));
 });
 
 server.listen(80, () => {
@@ -87,16 +104,17 @@ function eventSwitch(data,res) {
 function clickEventHandler(data,res) {
     switch (data.EventKey[0]) {
         case 'V1001_QUEUE_QUERY':
-            const customerCount = 3;
-            const waitingTime = 5
-            const reply = '在您之前有'+customerCount+'人，预计等待时间约'+waitingTime+'分钟';
-            res.end('<xml>'+
-            '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
-            '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
-            '<CreateTime>1348831860</CreateTime>'+
-            '<MsgType><![CDATA[text]]></MsgType>'+
-            '<Content><![CDATA['+reply+']]></Content>'+
-            '</xml>');
+            queue.numberOfCustomersInQueue((err,number) => {
+                queue.estimatedTime(err,waitingTime);
+                const reply = '在您之前有'+number+'人，预计等待时间约'+waitingTime+'分钟';
+                res.end('<xml>'+
+                '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
+                '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
+                '<CreateTime>1348831860</CreateTime>'+
+                '<MsgType><![CDATA[text]]></MsgType>'+
+                '<Content><![CDATA['+reply+']]></Content>'+
+                '</xml>');
+            });
             break;
         default:
             res.end('success');
