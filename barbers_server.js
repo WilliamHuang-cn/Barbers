@@ -5,7 +5,7 @@ var connect = require('connect');
 var util = require('util');
 var queue = require('./lib/barberQueue');
 
-var tempID = '';
+// var tempID = '';
 
 api.getAccessToken((err,token) => {
     api.postMenu(token,'./public/CustomMenu.json',(err) => {
@@ -20,41 +20,58 @@ server.use((req,res,next) => {
     console.log(req.headers);
     next();
 });
+
 var bodyParser = require('body-parser');
+
+// Deal with web service
+server.use('/add_to_queue',(req,res,next) => {
+    if (req.method == 'GET') {
+        openid = qs.parse(req.url.substring(2,req.url.length)).openid;
+        // openid = qs.parse(req.url);
+        console.log(openid);
+        res.setHeader('content-type','text/html');
+
+        res.write('<html>'+
+            '<head>'+
+            '<link rel="stylesheet" type="text/css" href="stylesheets/weui.css"></link>'+
+            '</head>'+
+            '<body>'
+        );
+        var stream = require('fs').createReadStream('./public/register.html');
+        stream.pipe(res);
+        stream.on('error', (err) => console.log(err));
+    }
+    else next();
+});
 
 server.use('/add_to_queue',bodyParser.urlencoded());
 server.use('/add_to_queue',(req,res,next) => {
     console.log(req.body);
     next();
 });
-// Deal with web service
+
 server.use('/add_to_queue',(req,res,next) => {
-    if (req.method == 'GET') {
-        res.setHeader('content-type','text/html');
-        var stream = require('fs').createReadStream('./public/register.html');
-        stream.pipe(res);
-        stream.on('error', (err) => console.log(err));
-    }
     if (req.method == 'POST' && req.body != null) {
-        api.getAccessToken((err,token) => {
-            console.log(tempID);
-            api.fetchUserInfo(token,'',tempID,(err,data) => {
-                if (err != null || data == null || data == undefined) {
-                    console.log('Error feteching user info: '+err);
-                }
-                else {
-                    queue.addCustomerToQueue({
-                        'nickname':data.nickname,
-                        'openID':data.openid,
-                        'serviceType':req.body.serviceType,
-                        'estimatedTime':50
-                    },(err)=>{});
-                }
-                res.end();
-                next();
-            });
-        });
+        // api.getAccessToken((err,token) => {
+        //     console.log(tempID);
+        //     api.fetchUserInfo(token,'',tempID,(err,data) => {
+        //         if (err != null || data == null || data == undefined) {
+        //             console.log('Error feteching user info: '+err);
+        //         }
+        //         else {
+        //             queue.addCustomerToQueue({
+        //                 'nickname':data.nickname,
+        //                 'openID':data.openid,
+        //                 'serviceType':req.body.serviceType,
+        //                 'estimatedTime':50
+        //             },(err)=>{});
+        //         }
+        //         res.end();
+        //         next();
+        //     });
+        // });
     }
+    else next();
 });
 
 server.use('/stylesheets',(req,res,next) => {
@@ -97,9 +114,9 @@ server.use('/', (req,res,next) => {
             }
         });
     }
-    else {
-        next();
-    }
+    // else {
+    //     next();
+    // }
 });
 
 server.listen(80, () => {
@@ -123,16 +140,33 @@ function clickEventHandler(data,res) {
     switch (data.EventKey[0]) {
         case 'V1001_QUEUE_QUERY':
             queue.numberOfCustomersInQueue((err,number) => {
-                queue.estimatedTime(err,waitingTime);
+                queue.totalEstimatedTime((err,waitingTime) => {
                 const reply = '在您之前有'+number+'人，预计等待时间约'+waitingTime+'分钟';
                 res.end('<xml>'+
                 '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
                 '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
-                '<CreateTime>1348831860</CreateTime>'+
+                '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
                 '<MsgType><![CDATA[text]]></MsgType>'+
                 '<Content><![CDATA['+reply+']]></Content>'+
                 '</xml>');
             });
+            });
+            break;
+        case 'V1001_QUEUE':
+            res.end('<xml>'+
+            '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
+            '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
+            '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
+            '<MsgType><![CDATA[news]]></MsgType>'+
+            '<ArticleCount>1</ArticleCount>'+
+            '<Articles>'+
+                '<item>'+
+                    '<Title><![CDATA[点我理发！]]></Title>'+
+                    '<Description><![CDATA[阿斯顿发送到发送到发送到发送短发]]></Description>'+
+                    '<Url><![CDATA[http://47.92.109.146/add_to_queue?openid='+data.FromUserName+']]></Url>'+
+                '</item>'+
+            '</Articles>'+
+            '</xml>');
             break;
         default:
             res.end('success');
@@ -140,6 +174,6 @@ function clickEventHandler(data,res) {
 }
 
 function viewEventHandler(data,res) {
-    tempID = data.FromUserName[0];
+    // tempID = data.FromUserName[0];
     res.end();
 }
