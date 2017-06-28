@@ -4,6 +4,7 @@ var api = require('./lib/weChatAPI');
 var connect = require('connect');
 var util = require('util');
 var queue = require('./lib/barberQueue');
+var am = require('./lib/answeringMachine');
 
 // var tempID = '';
 
@@ -105,7 +106,7 @@ server.use('/', (req,res,next) => {
                       break;
                   case 'text':
                       console.log('A text is received.');
-                      res.end('success');
+                      textHandler(data,res);
                       break;
                   default:
                       console.log('Unknown type received: '+data.xml.MsgType[0]);
@@ -176,4 +177,22 @@ function clickEventHandler(data,res) {
 function viewEventHandler(data,res) {
     // tempID = data.FromUserName[0];
     res.end();
+}
+
+function textHandler(data,res) {
+    am.answerMessage(data.Content[0],(err,reply) => {
+        if (err != null) {
+            console.log(err);
+            res.end('success');
+        }
+        else {
+            res.end('<xml>'+
+            '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
+            '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
+            '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
+            '<MsgType><![CDATA[text]]></MsgType>'+
+            '<Content><![CDATA['+reply+']]></Content>'+
+            '</xml>');
+        }
+    });
 }
