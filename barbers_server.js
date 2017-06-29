@@ -109,8 +109,9 @@ server.use('/', (req,res,next) => {
                       textHandler(data,res);
                       break;
                   default:
-                      console.log('Unknown type received: '+data.xml.MsgType[0]);
-                      res.end('success');
+                      console.log('Unknown type received: '+data.MsgType[0]);
+                      textHandler(data,res);
+                    //   res.end('success');
               }
             }
         });
@@ -180,7 +181,7 @@ function viewEventHandler(data,res) {
 }
 
 function textHandler(data,res) {
-    am.answerMessage(data.Content[0],(err,reply) => {
+    am.answerMessage(data,(err,reply) => {
         if (err != null) {
             console.log(err);
             res.end('success');
