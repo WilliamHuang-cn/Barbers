@@ -117,6 +117,10 @@ exports.queue_remove_success_test = function (test) {
 });
     queue.addCustomerToQueue(customer3,(err) => {});
 
+    queue.totalEstimatedTime((err,time) => {
+        test.equal(time,150,'Total estimated time should equal to 150.');
+    });
+
     var count = 3;
     queue.nextCustomerFromQueue((err,nextCust) => {
         test.equal(err,null,'Queue should not throw error upon removing customer.');

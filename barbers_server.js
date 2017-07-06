@@ -53,24 +53,26 @@ server.use('/add_to_queue',(req,res,next) => {
 
 server.use('/add_to_queue',(req,res,next) => {
     if (req.method == 'POST' && req.body != null) {
-        // api.getAccessToken((err,token) => {
-        //     console.log(tempID);
-        //     api.fetchUserInfo(token,'',tempID,(err,data) => {
-        //         if (err != null || data == null || data == undefined) {
-        //             console.log('Error feteching user info: '+err);
-        //         }
-        //         else {
-        //             queue.addCustomerToQueue({
-        //                 'nickname':data.nickname,
-        //                 'openid':data.openid,
-        //                 'serviceType':req.body.serviceType,
-        //                 'estimatedTime':50
-        //             },(err)=>{});
-        //         }
-        //         res.end();
-        //         next();
-        //     });
-        // });
+        api.getAccessToken((err,token) => {
+            console.log(tempID);
+            api.fetchUserInfo(token,'',tempID,(err,data) => {
+                if (err != null || data == null || data == undefined) {
+                    console.log('Error feteching user info: '+err);
+                }
+                else {
+                    queue.addCustomerToQueue({
+                        // 'nickname':data.nickname,
+                        'openid':data.openid,
+                        'serviceType':req.body.serviceType,
+                        // 'estimatedTime':50
+                    },(err)=>{
+                        console.log(err);
+                    });
+                }
+                res.end();
+                next();
+            });
+        });
     }
     else next();
 });
