@@ -62,7 +62,7 @@ server.use('/add_to_queue',(req,res,next) => {
         //         else {
         //             queue.addCustomerToQueue({
         //                 'nickname':data.nickname,
-        //                 'openID':data.openid,
+        //                 'openid':data.openid,
         //                 'serviceType':req.body.serviceType,
         //                 'estimatedTime':50
         //             },(err)=>{});
