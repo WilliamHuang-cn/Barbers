@@ -9,7 +9,7 @@
 <body>
 
 
-<div class="weui-cells__title">用户信息</div>
+<div class="weui-cells__title">您的信息</div>
 <div class="weui-cells weui-cells_form">
 <!--
     <div class="weui-cell">
@@ -32,6 +32,19 @@
             <input class="weui-input" type="text" placeholder="请输入手机号"/>
         </div>
     </div>
+    
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label for="" class="weui-label">性别</label>
+        </div>
+        <div class="weui-cell__bd">
+            <select class="weui-select" name="sex">
+                <option value="1">男</option>
+                <option value="2">女</option>
+            </select>
+        </div>
+    </div>
+    
 <!--
     <div class="weui-cell weui-cell_vcode">
         <div class="weui-cell__hd">
@@ -112,16 +125,6 @@
 </div>
 -->
 
-<div class="weui-cells__title">备注</div>
-<div class="weui-cells weui-cells_form">
-    <div class="weui-cell">
-        <div class="weui-cell__bd">
-            <textarea class="weui-textarea" placeholder="请输入备注" rows="5"></textarea>
-            <div class="weui-textarea-counter"><span>0</span>/200</div>
-        </div>
-    </div>
-</div>
-
 <!--
 <div class="weui-cells__title">选择</div>
 <div class="weui-cells">
@@ -141,7 +144,7 @@
     </div>
 </div>
 -->
-<div class="weui-cells__title">选择</div>
+<div class="weui-cells__title">请选择服务类型</div>
 <!--
 <div class="weui-cells">
     <div class="weui-cell weui-cell_select">
@@ -168,13 +171,11 @@
         </div>
     </div>
 -->
-	<div class="weui-cell weui-cell_select weui-cell_select-after">
-        <div class="weui-cell__hd">
-            <label for="" class="weui-label">服务类型</label>
-        </div>
+	<div class="weui-cells">
+    <div class="weui-cell weui-cell_select">
         <div class="weui-cell__bd">
-            <select class="weui-select" name="select2">
-                <option value="1">精剪</option>
+            <select class="weui-select" name="service_type">
+                <option selected="" value="1">精剪</option>
                 <option value="2">洗吹</option>
                 <option value="3">单剪</option>
 				<option value="4">洗剪吹</option>
@@ -182,18 +183,30 @@
 			    <option value="6">彩焗</option>
 			    <option value="7">烫发</option>
                 <option value="8">护理</option>
-                <option value="9">修眉</option>
-            </select>
+                <option value="9">修眉</option>           
+             </select>
         </div>
     </div>
 </div>
 
+<div class="weui-cells__title">备注</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请把您的特殊需求写在这里" rows="5"></textarea>
+            <div class="weui-textarea-counter"><span>0</span>/200</div>
+        </div>
+    </div>
+</div>
+
+<!--
 <label for="weuiAgree" class="weui-agree">
     <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
     <span class="weui-agree__text">
         阅读并同意<a href="javascript:void(0);">《相关条款》</a>
     </span>
 </label>
+-->
 
 <div class="weui-btn-area">
     <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>
