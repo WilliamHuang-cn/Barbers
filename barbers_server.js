@@ -17,7 +17,6 @@ api.getAccessToken((err,token) => {
 
 // var server = connect();
 var server = http.createServer(app);
-var io = require('socket.io')(server);
 
 app.use((req,res,next) => {
     console.log('%s %s', req.method, req.url+'\r\n');
@@ -129,6 +128,10 @@ app.use('/', (req,res,next) => {
 server.listen(80, () => {
     console.log('Server running on port 80.');
 });
+
+// Handle socket.io connections from register page
+var socketServer = require('./lib/socket_server');
+socketServer.listen(server);
 
 function eventSwitch(data,res) {
     switch (data.Event[0]) {
