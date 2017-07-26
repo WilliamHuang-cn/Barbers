@@ -24,6 +24,8 @@ app.use((req,res,next) => {
     next();
 });
 
+app.use(express.static('public'))
+
 var bodyParser = require('body-parser');
 
 // Deal with web service
@@ -79,11 +81,11 @@ app.use('/add_to_queue',(req,res,next) => {
     else next();
 });
 
-app.use('/stylesheets',(req,res,next) => {
-    var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
-    stream.pipe(res);
-    stream.on('error', (err) => console.log(err));
-});
+// app.use('/stylesheets',(req,res,next) => {
+//     var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
+//     stream.pipe(res);
+//     stream.on('error', (err) => console.log(err));
+// });
 
 app.use('/',bodyParser.text({'type':'text/*'}));
 
