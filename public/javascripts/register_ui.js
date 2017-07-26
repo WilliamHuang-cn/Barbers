@@ -6,6 +6,9 @@ $(document).ready(function () {
 
     // $("#testid").val("hello");
     $("#submit").on('click',function(){
-        socket.emit('joinQueue',{});
+        var name = $("#name").val;
+        var tel = $("#telnumber").val;
+        var sex = $("#sex").val;
+        socket.emit('joinQueue',{name:name,sex:sex,tel:tel});
     });
 });
