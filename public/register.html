@@ -178,16 +178,16 @@
 	<div class="weui-cells">
     <div class="weui-cell weui-cell_select">
         <div class="weui-cell__bd">
-            <select class="weui-select" name="service_type">
-                <option selected="" value="1">精剪</option>
-                <option value="2">洗吹</option>
-                <option value="3">单剪</option>
-				<option value="4">洗剪吹</option>
-			    <option value="5">修面</option>
-			    <option value="6">彩焗</option>
-			    <option value="7">烫发</option>
-                <option value="8">护理</option>
-                <option value="9">修眉</option>
+            <select class="weui-select" name="服务类型" id="service_type">
+                <option selected="selected" value="fine_cut">精剪</option>
+                <option value="wash_blow">洗吹</option>
+                <option value="cut">单剪</option>
+				<option value="wash_cut_blow">洗剪吹</option>
+			    <option value="shave">修面</option>
+			    <option value="baked_colour">彩焗</option>
+			    <option value="perm">烫发</option>
+                <option value="nursing">护理</option>
+                <option value="eyebrow">修眉</option>
              </select>
         </div>
     </div>
@@ -197,7 +197,7 @@
 <div class="weui-cells weui-cells_form">
     <div class="weui-cell">
         <div class="weui-cell__bd">
-            <textarea class="weui-textarea" placeholder="请把您的特殊需求写在这里" rows="5"></textarea>
+            <textarea class="weui-textarea" placeholder="请把您的特殊需求写在这里" rows="5" id="remakrs"></textarea>
             <div class="weui-textarea-counter"><span>0</span>/200</div>
         </div>
     </div>
