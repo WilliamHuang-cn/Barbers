@@ -16,7 +16,7 @@ api.getAccessToken((err,token) => {
 });
 
 // var server = connect();
-var server = http.Server(app);
+var server = http.createServer(app);
 
 app.use((req,res,next) => {
     console.log('%s %s', req.method, req.url+'\r\n');
