@@ -127,7 +127,7 @@ server.listen(80, () => {
 
 // Handle socket.io connections from register page
 var socketServer = require('./lib/socket_server');
-socketServer.listen(server);
+socketServer.listen(server,queue);
 
 function eventSwitch(data,res) {
     switch (data.Event[0]) {
