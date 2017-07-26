@@ -5,7 +5,8 @@ var connect = require('connect');
 var util = require('util');
 var queue = require('./lib/barberQueue');
 var am = require('./lib/answeringMachine');
-var app = require('express')();
+var express = require('express');
+var app = express();
 // var tempID = '';
 
 api.getAccessToken((err,token) => {
