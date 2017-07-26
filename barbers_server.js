@@ -28,21 +28,6 @@ app.use(express.static('./public'));
 
 var bodyParser = require('body-parser');
 
-// Deal with web service
-// app.get('/register',(req,res,next) => {
-//     if (req.method == 'GET') {
-//         openid = qs.parse(req.url.substring(2,req.url.length)).openid;
-//         // openid = qs.parse(req.url);
-//         // console.log(openid);
-//         res.setHeader('content-type','text/html');
-//
-//         var stream = require('fs').createReadStream('./public/register.html');
-//         stream.pipe(res);
-//         stream.on('error', (err) => console.log(err));
-//     }
-//     else next();
-// });
-
 app.use('/register',bodyParser.urlencoded());
 app.use('/register',(req,res,next) => {
     console.log(req.body);
@@ -73,15 +58,6 @@ app.post('/register',(req,res,next) => {
         });
     }
     else next();
-});
-
-app.get('/monitor',(req,res,next) => {
-    // openid = qs.parse(req.url.substring(2,req.url.length)).openid;
-    res.setHeader('content-type','text/html');
-
-    var stream = require('fs').createReadStream('./public/register.html');
-    stream.pipe(res);
-    stream.on('error', (err) => console.log(err));
 });
 
 app.use('/',bodyParser.text({'type':'text/*'}));
@@ -158,7 +134,7 @@ function clickEventHandler(data,res) {
                 '<MsgType><![CDATA[text]]></MsgType>'+
                 '<Content><![CDATA['+reply+']]></Content>'+
                 '</xml>');
-            });
+                });
             });
             break;
         case 'V1001_QUEUE':
@@ -173,6 +149,22 @@ function clickEventHandler(data,res) {
                     '<Title><![CDATA[点我理发！]]></Title>'+
                     '<Description><![CDATA[阿斯顿发送到发送到发送到发送短发]]></Description>'+
                     '<Url><![CDATA[http://47.92.109.146/register.html?openid='+data.FromUserName+']]></Url>'+
+                '</item>'+
+            '</Articles>'+
+            '</xml>');
+            break;
+        case 'V1001_QUEUE_MONITOR':
+            res.end('<xml>'+
+            '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
+            '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
+            '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
+            '<MsgType><![CDATA[news]]></MsgType>'+
+            '<ArticleCount>1</ArticleCount>'+
+            '<Articles>'+
+                '<item>'+
+                    '<Title><![CDATA[点我查看队列]]></Title>'+
+                    '<Description><![CDATA[这里没有描述 :P]]></Description>'+
+                    '<Url><![CDATA[http://47.92.109.146/queue_monitor.html'+']]></Url>'+
                 '</item>'+
             '</Articles>'+
             '</xml>');

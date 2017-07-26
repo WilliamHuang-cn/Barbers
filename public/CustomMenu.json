@@ -12,6 +12,11 @@
                "type":"click",
                "name":"队伍查询",
                "key":"V1001_QUEUE_QUERY"
+            },
+            {
+                "type":"click",
+                "name":"队伍查看页",
+                "key":"V1001_QUEUE_MONITOR"
             }]
        }],
        "matchrule":{
