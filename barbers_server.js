@@ -7,7 +7,6 @@ var queue = require('./lib/barberQueue');
 var am = require('./lib/answeringMachine');
 var express = require('express');
 var app = express();
-// var tempID = '';
 
 api.getAccessToken((err,token) => {
     api.postMenu(token,'./public/CustomMenu.json',(err) => {
