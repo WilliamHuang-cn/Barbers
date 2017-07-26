@@ -85,9 +85,9 @@ app.use('/stylesheets',(req,res,next) => {
     stream.on('error', (err) => console.log(err));
 });
 
-server.use('/',bodyParser.text({'type':'text/*'}));
+app.use('/',bodyParser.text({'type':'text/*'}));
 
-server.use('/',(req,res,next) => {
+app.use('/',(req,res,next) => {
     console.log(req.body);
     next();
 });
