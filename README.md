@@ -15,3 +15,5 @@ socket.io事件：
 2. 浏览器侦听'serviceTypes'事件，将服务信息转换为选项（待实现）
 3. 浏览器发出'joinQueue'事件，在option中描述用户姓名，电话，服务类型等信息
 4. 服务端侦听'joinQueue'事件，把用户加入队列中
+5. 服务端发出'joinResult'事件，返回加入结果
+6. 浏览器侦听'joinResult'事件，把结果反馈给用户

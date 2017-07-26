@@ -18,4 +18,14 @@ $(document).ready(function () {
             alert('Incomplete info!');
         }
     });
+
+    socket.on('joinResult',(result) => {
+        if (result.success) {
+            // TODO: implement redirection
+
+            alert('Success! You are in queue now!');
+        } else {
+            alert(result.msg);
+        }
+    });
 });
