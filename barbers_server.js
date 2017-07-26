@@ -24,32 +24,32 @@ app.use((req,res,next) => {
     next();
 });
 
-app.use(express.static('public'))
+app.use(express.static('./public'));
 
 var bodyParser = require('body-parser');
 
 // Deal with web service
-app.use('/add_to_queue',(req,res,next) => {
-    if (req.method == 'GET') {
-        openid = qs.parse(req.url.substring(2,req.url.length)).openid;
-        // openid = qs.parse(req.url);
-        // console.log(openid);
-        res.setHeader('content-type','text/html');
+// app.get('/register',(req,res,next) => {
+//     if (req.method == 'GET') {
+//         openid = qs.parse(req.url.substring(2,req.url.length)).openid;
+//         // openid = qs.parse(req.url);
+//         // console.log(openid);
+//         res.setHeader('content-type','text/html');
+//
+//         var stream = require('fs').createReadStream('./public/register.html');
+//         stream.pipe(res);
+//         stream.on('error', (err) => console.log(err));
+//     }
+//     else next();
+// });
 
-        var stream = require('fs').createReadStream('./public/register.html');
-        stream.pipe(res);
-        stream.on('error', (err) => console.log(err));
-    }
-    else next();
-});
-
-app.use('/add_to_queue',bodyParser.urlencoded());
-app.use('/add_to_queue',(req,res,next) => {
+app.use('/register',bodyParser.urlencoded());
+app.use('/register',(req,res,next) => {
     console.log(req.body);
     next();
 });
 
-app.use('/add_to_queue',(req,res,next) => {
+app.post('/register',(req,res,next) => {
     if (req.method == 'POST' && req.body != null) {
         api.getAccessToken((err,token) => {
             console.log(tempID);
@@ -75,11 +75,14 @@ app.use('/add_to_queue',(req,res,next) => {
     else next();
 });
 
-// app.use('/stylesheets',(req,res,next) => {
-//     var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
-//     stream.pipe(res);
-//     stream.on('error', (err) => console.log(err));
-// });
+app.get('/monitor',(req,res,next) => {
+    // openid = qs.parse(req.url.substring(2,req.url.length)).openid;
+    res.setHeader('content-type','text/html');
+
+    var stream = require('fs').createReadStream('./public/register.html');
+    stream.pipe(res);
+    stream.on('error', (err) => console.log(err));
+});
 
 app.use('/',bodyParser.text({'type':'text/*'}));
 
@@ -89,7 +92,7 @@ app.use('/',(req,res,next) => {
 });
 
 // Deal with WeChat message/event call
-app.use('/', (req,res,next) => {
+app.post('/', (req,res,next) => {
     // if (req.method == 'POST' && req.url == '/' && req.headers['content-type'] == 'text/xml') {
     if (req.method == 'POST' && req.headers['content-type'] == 'text/xml') {
 
@@ -169,7 +172,7 @@ function clickEventHandler(data,res) {
                 '<item>'+
                     '<Title><![CDATA[点我理发！]]></Title>'+
                     '<Description><![CDATA[阿斯顿发送到发送到发送到发送短发]]></Description>'+
-                    '<Url><![CDATA[http://47.92.109.146/add_to_queue?openid='+data.FromUserName+']]></Url>'+
+                    '<Url><![CDATA[http://47.92.109.146/register.html?openid='+data.FromUserName+']]></Url>'+
                 '</item>'+
             '</Articles>'+
             '</xml>');
