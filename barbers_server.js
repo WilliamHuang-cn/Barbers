@@ -33,15 +33,9 @@ app.use('/add_to_queue',(req,res,next) => {
     if (req.method == 'GET') {
         openid = qs.parse(req.url.substring(2,req.url.length)).openid;
         // openid = qs.parse(req.url);
-        console.log(openid);
+        // console.log(openid);
         res.setHeader('content-type','text/html');
 
-        res.write('<html>'+
-            '<head>'+
-            '<link rel="stylesheet" type="text/css" href="stylesheets/weui.css"></link>'+
-            '</head>'+
-            '<body>'
-        );
         var stream = require('fs').createReadStream('./public/register.html');
         stream.pipe(res);
         stream.on('error', (err) => console.log(err));
