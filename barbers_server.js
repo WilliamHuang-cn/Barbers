@@ -5,7 +5,7 @@ var connect = require('connect');
 var util = require('util');
 var queue = require('./lib/barberQueue');
 var am = require('./lib/answeringMachine');
-
+var app = require('express')();
 // var tempID = '';
 
 api.getAccessToken((err,token) => {
@@ -15,8 +15,11 @@ api.getAccessToken((err,token) => {
     }});
 });
 
-var server = connect();
-server.use((req,res,next) => {
+// var server = connect();
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+
+app.use((req,res,next) => {
     console.log('%s %s', req.method, req.url+'\r\n');
     console.log(req.headers);
     next();
@@ -25,7 +28,7 @@ server.use((req,res,next) => {
 var bodyParser = require('body-parser');
 
 // Deal with web service
-server.use('/add_to_queue',(req,res,next) => {
+app.use('/add_to_queue',(req,res,next) => {
     if (req.method == 'GET') {
         openid = qs.parse(req.url.substring(2,req.url.length)).openid;
         // openid = qs.parse(req.url);
@@ -45,13 +48,13 @@ server.use('/add_to_queue',(req,res,next) => {
     else next();
 });
 
-server.use('/add_to_queue',bodyParser.urlencoded());
-server.use('/add_to_queue',(req,res,next) => {
+app.use('/add_to_queue',bodyParser.urlencoded());
+app.use('/add_to_queue',(req,res,next) => {
     console.log(req.body);
     next();
 });
 
-server.use('/add_to_queue',(req,res,next) => {
+app.use('/add_to_queue',(req,res,next) => {
     if (req.method == 'POST' && req.body != null) {
         api.getAccessToken((err,token) => {
             console.log(tempID);
@@ -77,7 +80,7 @@ server.use('/add_to_queue',(req,res,next) => {
     else next();
 });
 
-server.use('/stylesheets',(req,res,next) => {
+app.use('/stylesheets',(req,res,next) => {
     var stream = require('fs').createReadStream('./public/stylesheets'+req.url);
     stream.pipe(res);
     stream.on('error', (err) => console.log(err));
@@ -91,7 +94,7 @@ server.use('/',(req,res,next) => {
 });
 
 // Deal with WeChat message/event call
-server.use('/', (req,res,next) => {
+app.use('/', (req,res,next) => {
     // if (req.method == 'POST' && req.url == '/' && req.headers['content-type'] == 'text/xml') {
     if (req.method == 'POST' && req.headers['content-type'] == 'text/xml') {
 
