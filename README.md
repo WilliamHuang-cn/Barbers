@@ -20,3 +20,20 @@ socket.io事件表：
 3. 浏览器发出'monitorQueue'事件，向服务端请求队列信息
  --> 服务端侦听'monitorQueue'事件，发出'queueInfo'事件，返回队列信息
  --> 浏览器侦听'queueInfo'事件，把队列显示给用户
+
+# Object structure: customer
+Customer是用以保存用户信息的对象。每一个用户唯一对应一个Customer对象
+Customer对象以微信Openid唯一识别
+
+Customer对象结构:
+{
+     name:              -- Name of the customer (Required)  用户（真实？）姓名
+     nickname:          -- (Optional)   微信昵称
+     openid:            -- WeChat OpenID (Required) 微信Openid
+     tel:               -- Customer telephone number (Required) 用户（真实？）电话／联系方式
+     serviceType:       -- (Required)
+     estimatedTime:     -- (Optional)
+     sex:               -- (Required)   用户（真实？）性别
+ }
+
+Customer对象存储在内存中，由barber_queue.js管理

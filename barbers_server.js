@@ -3,7 +3,7 @@ var qs = require('querystring');
 var api = require('./lib/weChatAPI');
 var connect = require('connect');
 var util = require('util');
-var queue = require('./lib/barberQueue');
+var queue = require('./lib/barber_queue');
 var am = require('./lib/answeringMachine');
 var express = require('express');
 var app = express();
@@ -19,7 +19,7 @@ api.getAccessToken((err,token) => {
 var server = http.createServer(app);
 
 app.use((req,res,next) => {
-    console.log('%s %s', req.method, req.url+'\n');
+    console.log('%s %s', '\n'+req.method, req.url+'\n');
     console.log(req.headers);
     next();
 });
@@ -46,7 +46,6 @@ var bodyParser = require('body-parser');
 app.use('/register',bodyParser.urlencoded());
 app.use('/register',(req,res,next) => {
     console.log(req.body);
-    console.log('\n');
     next();
 });
 
@@ -93,7 +92,6 @@ app.get('/monitor',(req,res,next) => {
 app.use('/',bodyParser.text({'type':'text/*'}));
 app.use('/',(req,res,next) => {
     console.log(req.body);
-    console.log('\n');
     next();
 });
 

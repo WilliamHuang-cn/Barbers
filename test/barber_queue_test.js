@@ -1,4 +1,4 @@
-var queue = require('../lib/barberQueue');
+var queue = require('../lib/barber_queue');
 
 exports.queue_add_success_test = function (test) {
     test.expect(1);
