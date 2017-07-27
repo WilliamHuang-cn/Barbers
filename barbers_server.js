@@ -19,12 +19,13 @@ api.getAccessToken((err,token) => {
 var server = http.createServer(app);
 
 app.use((req,res,next) => {
-    console.log('%s %s', req.method, req.url+'\r\n');
+    console.log('%s %s', req.method, req.url+'\n');
     console.log(req.headers);
     next();
 });
 
-// app.use(express.static('./public'));
+app.use(express.static(__dirname + '/public/'));
+
 
 app.get('/register',(req,res,next) => {
     var options = {
@@ -32,7 +33,7 @@ app.get('/register',(req,res,next) => {
         dotfiles: 'deny'
       };
 
-    res.sendFile(register.html, options, function (err) {
+    res.sendFile('register.html', options, function (err) {
         if (err) {
         //   next(err);
             console.log(err);
@@ -45,6 +46,7 @@ var bodyParser = require('body-parser');
 app.use('/register',bodyParser.urlencoded());
 app.use('/register',(req,res,next) => {
     console.log(req.body);
+    console.log('\n');
     next();
 });
 
@@ -80,7 +82,7 @@ app.get('/monitor',(req,res,next) => {
         dotfiles: 'deny'
     };
 
-    res.sendFile(queue_monitor.html, options, function (err) {
+    res.sendFile('queue_monitor.html', options, function (err) {
         if (err) {
         //   next(err);
             console.log(err);
@@ -91,6 +93,7 @@ app.get('/monitor',(req,res,next) => {
 app.use('/',bodyParser.text({'type':'text/*'}));
 app.use('/',(req,res,next) => {
     console.log(req.body);
+    console.log('\n');
     next();
 });
 
