@@ -24,7 +24,21 @@ app.use((req,res,next) => {
     next();
 });
 
-app.use(express.static('./public'));
+// app.use(express.static('./public'));
+
+app.get('/register',(req,res,next) => {
+    var options = {
+        root: __dirname + '/public/',
+        dotfiles: 'deny'
+      };
+
+    res.sendFile(register.html, options, function (err) {
+        if (err) {
+        //   next(err);
+            console.log(err);
+        }
+    });
+});
 
 var bodyParser = require('body-parser');
 
@@ -60,8 +74,21 @@ app.post('/register',(req,res,next) => {
     else next();
 });
 
-app.use('/',bodyParser.text({'type':'text/*'}));
+app.get('/monitor',(req,res,next) => {
+    var options = {
+        root: __dirname + '/public/',
+        dotfiles: 'deny'
+    };
 
+    res.sendFile(queue_monitor.html, options, function (err) {
+        if (err) {
+        //   next(err);
+            console.log(err);
+        }
+    });
+});
+
+app.use('/',bodyParser.text({'type':'text/*'}));
 app.use('/',(req,res,next) => {
     console.log(req.body);
     next();
@@ -148,7 +175,7 @@ function clickEventHandler(data,res) {
                 '<item>'+
                     '<Title><![CDATA[点我理发！]]></Title>'+
                     '<Description><![CDATA[阿斯顿发送到发送到发送到发送短发]]></Description>'+
-                    '<Url><![CDATA[http://47.92.109.146/register.html?openid='+data.FromUserName+']]></Url>'+
+                    '<Url><![CDATA[http://47.92.109.146/register?openid='+data.FromUserName+']]></Url>'+
                 '</item>'+
             '</Articles>'+
             '</xml>');
@@ -164,7 +191,7 @@ function clickEventHandler(data,res) {
                 '<item>'+
                     '<Title><![CDATA[点我查看队列]]></Title>'+
                     '<Description><![CDATA[这里没有描述 :P]]></Description>'+
-                    '<Url><![CDATA[http://47.92.109.146/queue_monitor.html'+']]></Url>'+
+                    '<Url><![CDATA[http://47.92.109.146/monitor'+']]></Url>'+
                 '</item>'+
             '</Articles>'+
             '</xml>');
