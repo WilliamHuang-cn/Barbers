@@ -8,8 +8,9 @@ $(document).ready(function () {
         var sex = $('#sex').val();
         var service = $('#service_type').val();
         var remark = $('#remarks').val();
+        var id = $('#wechat_openid').text();
         if (name != '' && tel != '') {
-            socket.emit('joinQueue',{name:name,sex:sex,tel:tel,seriveType:service,remark:remark});
+            socket.emit('joinQueue',{name:name,sex:sex,tel:tel,seriveType:service,remark:remark,openid:id});
         }
         else {
             alert('Incomplete info!');
