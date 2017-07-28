@@ -29,18 +29,7 @@ app.use(express.static(__dirname + '/public/'));
 
 
 app.get('/register',(req,res,next) => {
-    // var options = {
-    //     root: __dirname + '/public/',
-    //     dotfiles: 'deny'
-    // };
-
     var id = req.query.openid;
-    // res.sendFile('register.html', options, function (err) {
-    //     if (err) {
-    //     //   next(err);
-    //         console.log(err);
-    //     }
-    // });
     res.render('register.ejs', {openid:id});
 });
 

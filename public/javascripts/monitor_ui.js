@@ -2,7 +2,7 @@ var socket = io.connect();
 
 function mediaBoxElement(customer) {
 
-    var nameElement = $('<li class="weui-media-box__info__meta"></li>').text(customer.name);
+    var nameElement = $('<li class="weui-media-box__info__meta"></li>').text(customer.name || `用户${customer.openid}`);
     var sexElement = $('<li class="weui-media-box__info__meta"></li>').text(customer.sex);
     var telElement = $('<li class="weui-media-box__info__meta weui-media-box__info__meta_extra"></li>').text(customer.tel);
 
