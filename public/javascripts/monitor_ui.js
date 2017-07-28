@@ -21,8 +21,21 @@ $(document).ready(function () {
     }, 1000);
 
     socket.on('queueInfo',(queueInfo) => {
-        queueInfo.forEach((customer,index) => {
+        queueInfo.forEach((customer) => {
             $('#queue_list').append(mediaBoxElement(customer));
         });
     });
+	
+	function hideActionSheet() {
+		$('#iosActionsheet').removeClass('weui-actionsheet_toggle');
+		$('#iosMask').fadeOut(200);
+	}
+
+	$('#iosMask').on('click', hideActionSheet);
+	$('#iosActionsheetCancel').on('click', hideActionSheet);
+	$("#showIOSActionSheet").on("click", function(){
+		$('#iosActionsheet').addClass('weui-actionsheet_toggle');
+		$('#iosMask').fadeIn(200);
+	});
+	
 });
