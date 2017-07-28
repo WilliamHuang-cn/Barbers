@@ -17,6 +17,7 @@ api.getAccessToken((err,token) => {
 
 // var server = connect();
 var server = http.createServer(app);
+app.set('views',__dirname + '/public');
 
 app.use((req,res,next) => {
     console.log('%s %s', '\n'+req.method, req.url+'\n');
@@ -28,17 +29,19 @@ app.use(express.static(__dirname + '/public/'));
 
 
 app.get('/register',(req,res,next) => {
-    var options = {
-        root: __dirname + '/public/',
-        dotfiles: 'deny'
-      };
+    // var options = {
+    //     root: __dirname + '/public/',
+    //     dotfiles: 'deny'
+    // };
 
-    res.sendFile('register.html', options, function (err) {
-        if (err) {
-        //   next(err);
-            console.log(err);
-        }
-    });
+    var id = req.query.openid;
+    // res.sendFile('register.html', options, function (err) {
+    //     if (err) {
+    //     //   next(err);
+    //         console.log(err);
+    //     }
+    // });
+    res.render('register.ejs', {openid:id});
 });
 
 var bodyParser = require('body-parser');
@@ -50,7 +53,8 @@ app.use('/register',(req,res,next) => {
 });
 
 app.post('/register',(req,res,next) => {
-    if (req.method == 'POST' && req.body != null) {
+    // if (req.method == 'POST' && req.body != null) {
+    if (req.body != null) {
         api.getAccessToken((err,token) => {
             console.log(tempID);
             api.fetchUserInfo(token,'',tempID,(err,data) => {
@@ -98,8 +102,8 @@ app.use('/',(req,res,next) => {
 // Deal with WeChat message/event call
 app.post('/', (req,res,next) => {
     // if (req.method == 'POST' && req.url == '/' && req.headers['content-type'] == 'text/xml') {
-    if (req.method == 'POST' && req.headers['content-type'] == 'text/xml') {
-
+    // if (req.method == 'POST' && req.headers['content-type'] == 'text/xml') {
+    if (req.headers['content-type'] == 'text/xml') {
         var parseString = require("xml2js").parseString;
         parseString(req.body, function (err, data) {
             if(!err){
