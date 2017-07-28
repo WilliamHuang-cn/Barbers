@@ -13,6 +13,16 @@ function mediaBoxElement(customer) {
     return $('<div></div>').attr({'class':'weui-media-box weui-media-box_text'}).append(headerElement).append(pElement).append(orderedListElement);
 }
 
+function hideActionSheet() {
+    $('#iosActionsheet').removeClass('weui-actionsheet_toggle');
+    $('#iosMask').fadeOut(200);
+}
+
+function showActionSheet() {
+    $('#iosActionsheet').addClass('weui-actionsheet_toggle');
+    $('#iosMask').fadeIn(200);
+}
+
 $(document).ready(function () {
     socket.emit('monitorQueue');
 
@@ -21,21 +31,16 @@ $(document).ready(function () {
     }, 1000);
 
     socket.on('queueInfo',(queueInfo) => {
-        queueInfo.forEach((customer) => {
+        for (let customer of queueInfo) {
             $('#queue_list').append(mediaBoxElement(customer));
-        });
+        }
+        // queueInfo.forEach((customer,index) => {
+        //     $('#queue_list').append(mediaBoxElement(customer,index));
+        // });
+        $('[class="weui-media-box weui-media-box_text"]').on('click',showActionSheet);
     });
-	
-	function hideActionSheet() {
-		$('#iosActionsheet').removeClass('weui-actionsheet_toggle');
-		$('#iosMask').fadeOut(200);
-	}
 
 	$('#iosMask').on('click', hideActionSheet);
 	$('#iosActionsheetCancel').on('click', hideActionSheet);
-	$("#showIOSActionSheet").on("click", function(){
-		$('#iosActionsheet').addClass('weui-actionsheet_toggle');
-		$('#iosMask').fadeIn(200);
-	});
-	
+    
 });

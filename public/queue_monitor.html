@@ -17,7 +17,7 @@
     <div class="weui-panel__bd">
         <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
             <div class="weui-media-box__hd">
-            	<img class="weui-media-box__thumb" src="material/placeholderpic.png" alt=""/> 
+            	<img class="weui-media-box__thumb" src="material/placeholderpic.png" alt=""/>
 			</div>
             <div class="weui-media-box__bd">
                 <h4 class="weui-media-box__title">标题一</h4>
@@ -26,7 +26,7 @@
         </a>
         <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
             <div class="weui-media-box__hd">
-				<img class="weui-media-box__thumb" src="material/placeholderpic.png" alt=""/> 
+				<img class="weui-media-box__thumb" src="material/placeholderpic.png" alt=""/>
             </div>
             <div class="weui-media-box__bd">
                 <h4 class="weui-media-box__title">标题二</h4>
@@ -38,7 +38,7 @@
         <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
             <div class="weui-cell__bd">查看更多</div>
             <span class="weui-cell__ft"></span>
-        </a>    
+        </a>
     </div>
 </div>
 -->
@@ -64,7 +64,7 @@
         <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
             <div class="weui-cell__bd">查看更多</div>
             <span class="weui-cell__ft"></span>
-        </a>    
+        </a>
     </div>
 -->
 <!--
@@ -98,8 +98,7 @@
 <div class="weui-panel">
     <div class="weui-panel__hd">队伍中的顾客</div>
     <div class="weui-panel__bd" id="queue_list">
-<!--
-        <div class="weui-media-box weui-media-box_text">
+        <div class="weui-media-box weui-media-box_text" id="hello">
             <h4 class="weui-media-box__title">服务类型</h4>
             <p class="weui-media-box__desc">备注，有什么写什么，包括顾客的特殊需求</p>
             <ol class="weui-media-box__info">
@@ -108,16 +107,6 @@
                 <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">电话</li>
             </ol>
         </div>
-        <div class="weui-media-box weui-media-box_text">
-            <h4 class="weui-media-box__title">服务类型</h4>
-            <p class="weui-media-box__desc">备注，有什么写什么，包括顾客的特殊需求</p>
-            <ol class="weui-media-box__info">
-                <li class="weui-media-box__info__meta">顾客姓名</li>
-                <li class="weui-media-box__info__meta">顾客性别</li>
-                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">电话</li>
-            </ol>
-        </div>
--->
     </div>
     <div class="weui-panel__bd">
     </div>
@@ -204,10 +193,10 @@
     </a>
 </div>
 -->
-<div class="page__bd page__bd_spacing">
+<!-- <div class="page__bd page__bd_spacing">
         <a href="javascript:;" class="weui-btn weui-btn_default" id="showIOSActionSheet">iOS ActionSheet</a>
         <a href="javascript:;" class="weui-btn weui-btn_default" id="showAndroidActionSheet">Android ActionSheet</a>
-    </div>
+</div> -->
 <div>
 	<div class="weui-mask" id="iosMask" style="opacity: 1;display: none"></div>
 	<div class="weui-actionsheet" id="iosActionsheet">
@@ -245,7 +234,7 @@
             $iosMask.fadeIn(200);
         });
     });
-	
+
     // android
     $(function(){
         var $androidActionSheet = $('#androidActionsheet');
