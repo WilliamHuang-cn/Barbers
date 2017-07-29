@@ -1,6 +1,6 @@
 var socket = io.connect();
 
-function mediaBoxElement(customer) {
+function mediaBoxElement(customer,index) {
 
     var nameElement = $('<li class="weui-media-box__info__meta"></li>').text(customer.name || `用户${customer.openid}`);
     var sexElement = $('<li class="weui-media-box__info__meta"></li>').text(customer.sex);
@@ -10,7 +10,7 @@ function mediaBoxElement(customer) {
     var pElement = $('<p class="weui-media-box__desc"></p>').text(customer.remark);
     var headerElement = $('<h4 class="weui-media-box__title"></h4>').text(customer.serviceType);
 
-    return $('<div></div>').attr({'class':'weui-media-box weui-media-box_text'}).append(headerElement).append(pElement).append(orderedListElement);
+    return $('<div></div>').attr({'class':'weui-media-box weui-media-box_text','index':index}).append(headerElement).append(pElement).append(orderedListElement);
 }
 
 function hideActionSheet() {
@@ -26,21 +26,23 @@ function showActionSheet() {
 $(document).ready(function () {
     socket.emit('monitorQueue');
 
-    setInterval(function() {
-        // socket.emit('monitorQueue');
-    }, 1000);
+    // setInterval(function() {
+    //     socket.emit('monitorQueue');
+    // }, 1000);
 
     socket.on('queueInfo',(queueInfo) => {
-        for (let customer of queueInfo) {
-            $('#queue_list').append(mediaBoxElement(customer));
-        }
-        // queueInfo.forEach((customer,index) => {
-        //     $('#queue_list').append(mediaBoxElement(customer,index));
-        // });
-        $('[class="weui-media-box weui-media-box_text"]').on('click',showActionSheet);
+        // for (let customer of queueInfo) {
+        //     $('#queue_list').html(mediaBoxElement(customer));
+        // }
+        queueInfo.forEach((customer,index) => {
+            $('#queue_list').html(mediaBoxElement(customer,index));
+            $(`[index=${index}]`).on('click',showActionSheet);
+
+        });
+        // $('[class="weui-media-box weui-media-box_text"]').on('click',showActionSheet);
     });
 
 	$('#iosMask').on('click', hideActionSheet);
 	$('#iosActionsheetCancel').on('click', hideActionSheet);
-    
+
 });
