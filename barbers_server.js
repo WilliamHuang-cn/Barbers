@@ -8,14 +8,14 @@ var am = require('./lib/answeringMachine');
 var express = require('express');
 var app = express();
 
+// TODO: save access token for later use. Expires in 2 hours.
 api.getAccessToken((err,token) => {
-    api.postMenu(token,'./public/CustomMenu.json',(err) => {
+    api.postMenu(token,'./public/customer_menu.json',(err) => {
     if (err != null) {
         console.log('Error posting menu: '+err);
     }});
 });
 
-// var server = connect();
 var server = http.createServer(app);
 app.set('views',__dirname + '/public');
 
@@ -27,7 +27,6 @@ app.use((req,res,next) => {
 
 app.use(express.static(__dirname + '/public/'));
 
-
 app.get('/register',(req,res,next) => {
     var id = req.query.openid;
     res.render('register.ejs', {openid:id});
@@ -35,38 +34,39 @@ app.get('/register',(req,res,next) => {
 
 var bodyParser = require('body-parser');
 
-app.use('/register',bodyParser.urlencoded());
+app.use('/register',bodyParser.urlencoded({extended: false}));
 app.use('/register',(req,res,next) => {
     console.log(req.body);
     next();
 });
 
-app.post('/register',(req,res,next) => {
-    // if (req.method == 'POST' && req.body != null) {
-    if (req.body != null) {
-        api.getAccessToken((err,token) => {
-            console.log(tempID);
-            api.fetchUserInfo(token,'',tempID,(err,data) => {
-                if (err != null || data == null || data == undefined) {
-                    console.log('Error feteching user info: '+err);
-                }
-                else {
-                    queue.addCustomerToQueue({
-                        // 'nickname':data.nickname,
-                        'openid':data.openid,
-                        'serviceType':req.body.serviceType,
-                        // 'estimatedTime':50
-                    },(err)=>{
-                        console.log(err);
-                    });
-                }
-                res.end();
-                next();
-            });
-        });
-    }
-    else next();
-});
+// TODO: remove code block
+// app.post('/register',(req,res,next) => {
+//     // if (req.method == 'POST' && req.body != null) {
+//     if (req.body != null) {
+//         api.getAccessToken((err,token) => {
+//             console.log(tempID);
+//             api.fetchUserInfo(token,'',tempID,(err,data) => {
+//                 if (err != null || data == null || data == undefined) {
+//                     console.log('Error feteching user info: '+err);
+//                 }
+//                 else {
+//                     queue.addCustomerToQueue({
+//                         // 'nickname':data.nickname,
+//                         'openid':data.openid,
+//                         'serviceType':req.body.serviceType,
+//                         // 'estimatedTime':50
+//                     },(err)=>{
+//                         console.log(err);
+//                     });
+//                 }
+//                 res.end();
+//                 next();
+//             });
+//         });
+//     }
+//     else next();
+// });
 
 app.get('/monitor',(req,res,next) => {
     var options = {
@@ -97,28 +97,27 @@ app.post('/', (req,res,next) => {
         parseString(req.body, function (err, data) {
             if(!err){
             if (data == null || data.xml == undefined) {
+                console.log('parse post request xml body from WeChat error.');
+                res.end('success');
                 return;
             }
-              data = data.xml;              // Remove xml layer
-              switch (data.MsgType[0]) {
-                  case 'event':
-                      eventSwitch(data,res);
-                      break;
-                  case 'text':
-                      console.log('A text is received.');
-                      textHandler(data,res);
-                      break;
-                  default:
-                      console.log('Unknown type received: '+data.MsgType[0]);
-                      textHandler(data,res);
-                    //   res.end('success');
-              }
+            data = data.xml;              // Remove xml layer
+            switch (data.MsgType[0]) {
+                case 'event':
+                    console.log('A event (' + data.Event[0] + ':' + data.EventKey[0] + ') is received.');
+                    eventSwitch(data,res);
+                    break;
+                case 'text':
+                    console.log('A text is received.');
+                    textHandler(data,res);
+                    break;
+                default:
+                    console.log('Unknown type received: '+data.MsgType[0]);
+                    textHandler(data,res);
             }
+          }
         });
     }
-    // else {
-    //     next();
-    // }
 });
 
 server.listen(80, () => {
@@ -138,7 +137,7 @@ function eventSwitch(data,res) {
             viewEventHandler(data,res);
             break;
         default:
-        res.end('success');
+            res.end('success');
     }
 }
 
@@ -149,7 +148,7 @@ function clickEventHandler(data,res) {
                 queue.totalEstimatedTime((err,waitingTime) => {
                 const reply = '在您之前有'+number+'人，预计等待时间约'+waitingTime+'分钟';
                 res.end('<xml>'+
-                '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
+                `<ToUserName><![CDATA[${data.FromUserName}]]></ToUserName>`+
                 '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
                 '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
                 '<MsgType><![CDATA[text]]></MsgType>'+
@@ -196,8 +195,7 @@ function clickEventHandler(data,res) {
 }
 
 function viewEventHandler(data,res) {
-    // tempID = data.FromUserName[0];
-    res.end();
+    res.end('success');
 }
 
 function textHandler(data,res) {

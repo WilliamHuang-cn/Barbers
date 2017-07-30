@@ -1,0 +1,49 @@
+# Barbers/lib
+包含所有服务端的扩展函数
+## socket_server.js
+socket.io链接由socket.io事件响应部分组成
+
+socket.io事件表：
+1. 浏览器发出'registerInfo'事件，向服务端请求服务信息（待实现）
+
+ --> 服务端侦听'registerInfo'事件，发出'serviceTypes'事件把服务信息交给浏览器（待实现）
+
+ --> 浏览器侦听'serviceTypes'事件，将服务信息转换为选项（待实现）
+
+2. 浏览器发出'joinQueue'事件，在option中描述用户姓名，电话，服务类型等信息
+
+ --> 服务端侦听'joinQueue'事件，把用户加入队列中，发出'joinResult'事件，返回加入结果
+
+ --> 浏览器侦听'joinResult'事件，把结果反馈给用户
+
+3. 浏览器发出'monitorQueue'事件，向服务端请求队列信息
+
+ --> 服务端侦听'monitorQueue'事件，发出'queueInfo'事件，返回队列信息
+
+ --> 浏览器侦听'queueInfo'事件，把队列显示给用户
+
+## barber_queue.js
+### Object structure: customer
+Customer是用以保存用户信息的对象。每一个用户唯一对应一个Customer对象
+
+Customer对象以微信Openid唯一识别
+
+Customer对象结构:
+// TODO: change queue to a JSON obejct. Use openid as key.
+```
+{
+  name:              -- Name of the customer (Optional)  用户（真实？）姓名
+  nickname:          -- (Optional)   微信昵称
+  openid:            -- WeChat OpenID (Required) 微信Openid
+  tel:               -- Customer telephone number (Optional) 用户（真实？）电话／联系方式
+  serviceType:       -- (Required)
+  estimatedTime:     -- (Optional)
+  sex:               -- (Optional)   用户（真实？）性别
+}
+```
+## weChatAPI.js
+实现WeChat API
+## serviceList.js
+提供服务类型查询、本地化
+## anweringMachine.js
+应答给定文字输入，实现文字交互排队
