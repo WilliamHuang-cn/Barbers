@@ -34,8 +34,9 @@ $(document).ready(function () {
         // for (let customer of queueInfo) {
         //     $('#queue_list').html(mediaBoxElement(customer));
         // }
+        $('#queue_list').html('');
         queueInfo.forEach((customer,index) => {
-            $('#queue_list').html(mediaBoxElement(customer,index));
+            $('#queue_list').append(mediaBoxElement(customer,index));
             $(`[index=${index}]`).on('click',showActionSheet);
 
         });

@@ -199,7 +199,7 @@ function viewEventHandler(data,res) {
 }
 
 function textHandler(data,res) {
-    am.answerMessage(data,(err,reply) => {
+    am.answerMessage(data,queue,(err,reply) => {
         if (err != null) {
             console.log(err);
             res.end('success');
