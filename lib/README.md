@@ -23,13 +23,18 @@ socket.io事件表：
  --> 浏览器侦听'queueInfo'事件，把队列显示给用户
 
 ## barber_queue.js
-### Object structure: customer
-Customer是用以保存用户信息的对象。每一个用户唯一对应一个Customer对象
+[]queue记录当前排队的顾客（以customer对象保存在内存中）
+<!-- ### Future Expectations -->
+[x]standing_queue对象以barber_name为key，顾客队列为value. 顾客队列是以customer对象为元素的数组
 
-Customer对象以微信Openid唯一识别
+[x]barber_processing对象以barber_name为key，顾客队列为value，记录正在理发的顾客. 顾客队列是以customer对象为元素的数组
+### 对象结构: customer
+Customer是用以保存用户信息的对象. 每一个用户唯一对应一个Customer对象
+
+Customer对象以微信openid唯一识别
 
 Customer对象结构:
-// TODO: change queue to a JSON obejct. Use openid as key.
+// TODO: change queue to a JSON object. Use openid as key.
 ```
 {
   name:              -- Name of the customer (Optional)  用户（真实？）姓名
