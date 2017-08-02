@@ -23,11 +23,11 @@ socket.io事件表：
  --> 浏览器侦听'queueInfo'事件，把队列显示给用户
 
 ## barber_queue.js
-[]queue记录当前排队的顾客（以customer对象保存在内存中）
-<!-- ### Future Expectations -->
-[x]standing_queue对象以barber_name为key，顾客队列为value. 顾客队列是以customer对象为元素的数组
+queue记录当前排队的顾客（以customer对象保存在内存中）
+### Future Expectations
+standing_queue对象以barber_name为key，顾客队列为value. 顾客队列是以customer对象为元素的数组
 
-[x]barber_processing对象以barber_name为key，顾客队列为value，记录正在理发的顾客. 顾客队列是以customer对象为元素的数组
+barber_processing对象以barber_name为key，顾客队列为value，记录正在理发的顾客. 顾客队列是以customer对象为元素的数组
 ### 对象结构: customer
 Customer是用以保存用户信息的对象. 每一个用户唯一对应一个Customer对象
 
