@@ -144,17 +144,15 @@ function eventSwitch(data,res) {
 function clickEventHandler(data,res) {
     switch (data.EventKey[0]) {
         case 'V1001_QUEUE_QUERY':
-            queue.numberOfCustomersInQueue((err,number) => {
-                queue.totalEstimatedTime((err,waitingTime) => {
-                const reply = '在您之前有'+number+'人，预计等待时间约'+waitingTime+'分钟';
-                res.end('<xml>'+
-                `<ToUserName><![CDATA[${data.FromUserName}]]></ToUserName>`+
-                '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
-                '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
-                '<MsgType><![CDATA[text]]></MsgType>'+
-                '<Content><![CDATA['+reply+']]></Content>'+
+            queue.totalEstimatedTime(data.FromUserName,(err,waitingTime,waitingNum) => {
+            const reply = '在您之前有'+waitingNum+'人，预计等待时间约'+waitingTime+'分钟';
+            res.end('<xml>'+
+            `<ToUserName><![CDATA[${data.FromUserName}]]></ToUserName>`+
+            '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
+            '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
+            '<MsgType><![CDATA[text]]></MsgType>'+
+            '<Content><![CDATA['+reply+']]></Content>'+
                 '</xml>');
-                });
             });
             break;
         case 'V1001_QUEUE':
