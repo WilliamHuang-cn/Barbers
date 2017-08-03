@@ -67,7 +67,7 @@ exports.queue_add_invalid_id_fail_test = function (test) {
         'serviceType':'wash'
     },(err) => {
         // TODO: 'Check err message
-        test.throws(() => {throw err},'Adding to queue should throw error on invalid WeChat openID.');
+        test.throws(() => {throw err},'Adding to queue should throw error on invalid WeChat openid.');
         test.done();
     });
 }
@@ -80,7 +80,7 @@ exports.queue_add_invalid_id_number_fail_test = function (test) {
         'serviceType':'wash'
     },(err) => {
         // TODO: 'Check err message
-        test.throws(() => {throw err},'Adding to queue should throw error on invalid WeChat openID.');
+        test.throws(() => {throw err},'Adding to queue should throw error on invalid WeChat openid.');
         test.done();
     });
 }
