@@ -10,6 +10,8 @@ $(document).ready(function () {
         var remark = $('#remarks').val();
         var id = $('#wechat_openid').text();
         if (name != '' && tel != '') {
+            $('#submit').addClass('weui-btn_loading');
+            $('#submit').prepend('<i class="weui-loading" id="loader"></i>');
             socket.emit('joinQueue',{name:name,sex:sex,tel:tel,seriveType:service,remark:remark,openid:id});
         }
         else {
@@ -18,10 +20,13 @@ $(document).ready(function () {
     });
 
     socket.on('joinResult',(result) => {
+        $('#submit').removeClass('weui-btn_loading');
+        $('#loader').remove();
         if (result.success) {
             // TODO: implement redirection
 
             alert('Success! You are in queue now!');
+            window.location.href = $('#redirect_url').text() || 'success.html';
         } else {
             alert(result.msg);
         }

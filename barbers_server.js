@@ -29,7 +29,12 @@ app.use(express.static(__dirname + '/public/'));
 
 app.get('/register',(req,res,next) => {
     var id = req.query.openid;
-    res.render('register.ejs', {openid:id});
+    var monitor = req.query.monitoring;
+    var redirection = '';
+    if (monitor == 'yes') {
+        redirection = './monitor';
+    }
+    res.render('register.ejs', {openid:id,redirection:redirection});
 });
 
 var bodyParser = require('body-parser');
