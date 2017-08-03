@@ -11,6 +11,10 @@
 </head>
 
 <body>
+<div class="weui-btn-area-right">
+    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary"></a>
+</div>
+
 <!--
 <div class="weui-panel weui-panel_access">
     <div class="weui-panel__hd">图文组合列表</div>
@@ -96,6 +100,7 @@
 </div>
 -->
 <div class="weui-panel">
+   
     <div class="weui-panel__hd">队伍中的顾客</div>
     <div class="weui-panel__bd" id="queue_list">
 <!--
@@ -213,40 +218,8 @@
 		</div>
 	</div>
 </div>
+
+
 </body>
-<!--
-<script type="text/javascript">
-    // ios
-    $(function(){
-        var $iosActionsheet = $('#iosActionsheet');
-        var $iosMask = $('#iosMask');
-
-        function hideActionSheet() {
-            $iosActionsheet.removeClass('weui-actionsheet_toggle');
-            $iosMask.fadeOut(200);
-        }
-
-        $iosMask.on('click', hideActionSheet);
-        $('#iosActionsheetCancel').on('click', hideActionSheet);
-        $("#showIOSActionSheet").on("click", function(){
-            $iosActionsheet.addClass('weui-actionsheet_toggle');
-            $iosMask.fadeIn(200);
-        });
-    });
-
-    // android
-    $(function(){
-        var $androidActionSheet = $('#androidActionsheet');
-        var $androidMask = $androidActionSheet.find('.weui-mask');
-
-        $("#showAndroidActionSheet").on('click', function(){
-            $androidActionSheet.fadeIn(200);
-            $androidMask.on('click',function () {
-                $androidActionSheet.fadeOut(200);
-            });
-        });
-    });
-</script>
--->
 
 </html>
