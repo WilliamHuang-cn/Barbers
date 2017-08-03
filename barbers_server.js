@@ -7,6 +7,7 @@ var queue = require('./lib/barber_queue');
 var am = require('./lib/answeringMachine');
 var express = require('express');
 var app = express();
+var userInfo = require('./lib/userInfo');
 
 // TODO: save access token for later use. Expires in 2 hours.
 api.getAccessToken((err,token) => {
@@ -31,10 +32,16 @@ app.get('/register',(req,res,next) => {
     var id = req.query.openid;
     var monitor = req.query.monitoring;
     var redirection = '';
+    var customer = {};
     if (monitor == 'yes') {
         redirection = './monitor';
     }
-    res.render('register.ejs', {openid:id,redirection:redirection});
+    userInfo.loadUserProfile(id,(err,Profile) => {
+        if (!err) {
+            customer = Profile;
+        }
+        res.render('register.ejs', {openid:id,redirection:redirection,customer:customer});
+    });
 });
 
 var bodyParser = require('body-parser');
@@ -131,7 +138,7 @@ server.listen(80, () => {
 
 // Handle socket.io connections from register page
 var socketServer = require('./lib/socket_server');
-socketServer.listen(server,queue);
+socketServer.listen(server,queue,userInfo);
 
 function eventSwitch(data,res) {
     switch (data.Event[0]) {
