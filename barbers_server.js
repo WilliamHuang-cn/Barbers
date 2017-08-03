@@ -208,13 +208,7 @@ function textHandler(data,res) {
             res.end('success');
         }
         else {
-            res.end('<xml>'+
-            '<ToUserName><![CDATA['+data.FromUserName+']]></ToUserName>'+
-            '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+
-            '<CreateTime><![CDATA['+data.CreateTime+']]></CreateTime>'+
-            '<MsgType><![CDATA[text]]></MsgType>'+
-            '<Content><![CDATA['+reply+']]></Content>'+
-            '</xml>');
+            res.end(reply);
         }
     });
 }
