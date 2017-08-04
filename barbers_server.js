@@ -40,7 +40,14 @@ app.get('/register',(req,res,next) => {
         if (!err) {
             customer = Profile;
         }
-        res.render('register.ejs', {openid:id,redirection:redirection,customer:customer});
+        queue.totalEstimatedTime(id,(err,totalInfo) => {
+            res.render('register.ejs', {openid:id,
+                                        redirection:redirection,
+                                        customer:customer,
+                                        totalInfo:totalInfo
+            });
+        })
+
     });
 });
 
@@ -156,8 +163,8 @@ function eventSwitch(data,res) {
 function clickEventHandler(data,res) {
     switch (data.EventKey[0]) {
         case 'V1001_QUEUE_QUERY':
-            queue.totalEstimatedTime(data.FromUserName,(err,waitingTime,waitingNum) => {
-            const reply = '在您之前有'+waitingNum+'人，预计等待时间约'+waitingTime+'分钟';
+            queue.totalEstimatedTime(data.FromUserName,(err,totalInfo) => {
+            const reply = '在您之前有'+totalInfo.totalCustomer+'人，预计等待时间约'+totalInfo.totalETime+'分钟';
             res.end('<xml>'+
             `<ToUserName><![CDATA[${data.FromUserName}]]></ToUserName>`+
             '<FromUserName><![CDATA['+data.ToUserName+']]></FromUserName>'+

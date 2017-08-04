@@ -48,7 +48,7 @@ Customer对象结构:
 ```
 ## weChatAPI.js
 实现WeChat API
-## serviceList.js
+## service_list.js
 提供服务类型查询、本地化
 ## anweringMachine.js
 应答给定文字输入，实现文字交互排队

@@ -132,8 +132,8 @@ exports.queue_pop_success_test = function (test) {
     queue.addCustomerToQueue(customer2,(err) => {});
     queue.addCustomerToQueue(customer3,(err) => {});
 
-    queue.totalEstimatedTime((err,time) => {
-        test.equal(time,180,'Total estimated time should equal to 150.');
+    queue.totalEstimatedTime((err,totalInfo) => {
+        test.equal(totalInfo.totalETime,180,'Total estimated time should equal to 150.');
     });
 
     var count = 3;
