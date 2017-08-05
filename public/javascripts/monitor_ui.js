@@ -8,7 +8,7 @@ function mediaBoxElement(customer,index) {
 
     var orderedListElement = $('<ul class="weui-media-box__info"></ul>').append(nameElement).append(sexElement).append(telElement);
     var pElement = $('<p class="weui-media-box__desc"></p>').text(customer.remark);
-    var headerElement = $('<h4 class="weui-media-box__title"></h4>').text(customer.serviceType);
+    var headerElement = $('<h4 class="weui-media-box__title"></h4>').text(customer.serviceName);
 
     return $('<div></div>').attr({'class':'weui-media-box weui-media-box_text','index':index}).append(headerElement).append(pElement).append(orderedListElement);
 }

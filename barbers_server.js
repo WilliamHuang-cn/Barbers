@@ -8,6 +8,10 @@ var am = require('./lib/answeringMachine');
 var express = require('express');
 var app = express();
 var userInfo = require('./lib/userInfo');
+var service_list = require('./lib/service_list');
+
+var secondaryRef = null;
+var serviceList = null;
 
 // TODO: save access token for later use. Expires in 2 hours.
 api.getAccessToken((err,token) => {
@@ -23,6 +27,8 @@ app.set('views',__dirname + '/public');
 app.use((req,res,next) => {
     console.log('%s %s', '\n'+req.method, req.url+'\n');
     console.log(req.headers);
+    secondaryRef = secondaryRef || service_list.getServiceListSecRef('zh_CN');
+    serviceList = serviceList || secondaryRef.serviceList;
     next();
 });
 
@@ -44,7 +50,8 @@ app.get('/register',(req,res,next) => {
             res.render('register.ejs', {openid:id,
                                         redirection:redirection,
                                         customer:customer,
-                                        totalInfo:totalInfo
+                                        totalInfo:totalInfo,
+                                        serviceList:serviceList
             });
         })
 
@@ -216,7 +223,7 @@ function viewEventHandler(data,res) {
 }
 
 function textHandler(data,res) {
-    am.answerMessage(data,queue,(err,reply) => {
+    am.answerMessage(data,queue,secondaryRef,(err,reply) => {
         if (err != null) {
             console.log(err);
             res.end('success');

@@ -193,15 +193,14 @@
     <div class="weui-cell weui-cell_select">
         <div class="weui-cell__bd">
             <select class="weui-select" name="服务类型" id="service_type">
-                <option selected="selected" value="fine_cut">精剪</option>
-                <option value="wash_blow">洗吹</option>
-                <option value="cut">单剪</option>
-				<option value="wash_cut_blow">洗剪吹</option>
-			    <option value="shave">修面</option>
-			    <option value="baked_colour">彩焗</option>
-			    <option value="perm">烫发</option>
-                <option value="nursing">护理</option>
-                <option value="eyebrow">修眉</option>
+                <% for (let service of serviceList) {%>
+                    <% var serviceName = service.serviceName + ' : ' + service.price + '  ' + service.estimatedTime;
+                       if ((totalInfo.inqueue) && (totalInfo.serviceType == service.serviceType)) {%>
+                        <option selected="selected" value="<%= service.serviceType%>"><%= serviceName%></option>
+                    <% } else {%>
+                        <option value="<%= service.serviceType%>"><%= serviceName%></option>
+                    <% }%>
+                <% }%>
              </select>
         </div>
     </div>
