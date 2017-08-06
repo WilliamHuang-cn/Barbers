@@ -10,12 +10,13 @@ function mediaBoxElement(customer,index) {
     var pElement = $('<p class="weui-media-box__desc"></p>').text(customer.remark);
     var headerElement = $('<h4 class="weui-media-box__title"></h4>').text(customer.serviceName);
 
-    return $('<div></div>').attr({'class':'weui-media-box weui-media-box_text','index':index}).append(headerElement).append(pElement).append(orderedListElement);
+    return $('<div></div>').attr({'class':'weui-media-box weui-media-box_text','index':index,'openid':customer.openid}).append(headerElement).append(pElement).append(orderedListElement);
 }
 
 function hideActionSheet() {
     $('#iosActionsheet').removeClass('weui-actionsheet_toggle');
     $('#iosMask').fadeOut(200);
+    chosenCus = '';
 }
 
 function showActionSheet() {
@@ -24,6 +25,7 @@ function showActionSheet() {
 }
 
 $(document).ready(function () {
+    var chosenCus = '';
     socket.emit('monitorQueue');
 
     // setInterval(function() {
@@ -31,19 +33,42 @@ $(document).ready(function () {
     // }, 1000);
 
     socket.on('queueInfo',(queueInfo) => {
-        // for (let customer of queueInfo) {
-        //     $('#queue_list').html(mediaBoxElement(customer));
-        // }
         $('#queue_list').html('');
         queueInfo.forEach((customer,index) => {
             $('#queue_list').append(mediaBoxElement(customer,index));
-            $(`[index=${index}]`).on('click',showActionSheet);
-
+            $(`[index=${index}]`).on('click',() => {
+                chosenCus = $(`[index=${index}]`).attr('openid');
+                showActionSheet();
+            });
         });
-        // $('[class="weui-media-box weui-media-box_text"]').on('click',showActionSheet);
+    });
+
+    socket.on('removeResult',(result) => {
+        if (result.success) {
+            alert('successfully remove customer');
+        } else {
+            alert(result.msg);
+        }
+        socket.emit('monitorQueue');
     });
 
 	$('#iosMask').on('click', hideActionSheet);
 	$('#iosActionsheetCancel').on('click', hideActionSheet);
 
+    $('#delete').on('click',() => {
+        hideActionSheet();
+        socket.emit('removeCustomer',{openid:chosenCus});
+    });
+
+    $('#move_up').on('click',() => {
+        hideActionSheet();
+    });
+
+    $('#move_down').on('click',() => {
+        hideActionSheet();
+    });
+
+    $('#modify').on('click',() => {
+        hideActionSheet();
+    });
 });

@@ -168,7 +168,7 @@ function clickEventHandler(data,res) {
             '<Articles>'+
                 '<item>'+
                     '<Title><![CDATA[点我理发！]]></Title>'+
-                    '<Description><![CDATA[阿斯顿发送到发送到发送到发送短发]]></Description>'+
+                    '<Description><![CDATA[发送到发送短发]]></Description>'+
                     '<Url><![CDATA[http://47.92.109.146/register?openid='+data.FromUserName+']]></Url>'+
                 '</item>'+
             '</Articles>'+

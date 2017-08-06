@@ -22,6 +22,12 @@ socket.io事件表：
 
  --> 浏览器侦听'queueInfo'事件，把队列显示给用户
 
+4. 浏览器发出'removeCustomer'事件，向服务端请求删除顾客
+
+ --> 服务端侦听'removeCustomer'事件，根据openid删除顾客，发出'removeResult'事件
+
+ --> 浏览器侦听'removeResult'事件，把结果返回给用户
+
 ## barber_queue.js
 queue记录当前排队的顾客（以customer对象保存在内存中）
 ### Future Expectations
