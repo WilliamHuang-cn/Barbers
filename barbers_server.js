@@ -12,6 +12,7 @@ var service_list = require('./lib/service_list');
 
 var secondaryRef = null;
 var serviceList = null;
+var customerNum = 0;
 
 // TODO: save access token for later use. Expires in 2 hours.
 api.getAccessToken((err,token) => {
@@ -41,12 +42,19 @@ app.get('/register',(req,res,next) => {
     var customer = {};
     if (monitor == 'yes') {
         redirection = './monitor';
+        id = Date.now();
+        customerNum ++;
+        customer = {
+            openid:id,
+            name: '顾客' + customerNum,
+            tel:'+86 (021) 1234-45678'
+        };
     }
     userInfo.loadUserProfile(id,(err,Profile) => {
         if (!err) {
             customer = Profile;
         }
-        queue.totalEstimatedTime(id,(err,totalInfo) => {
+        queue.totalEstimatedTime({openid:id},(err,totalInfo) => {
             res.render('register.ejs', {openid:id,
                                         redirection:redirection,
                                         customer:customer,
@@ -54,7 +62,6 @@ app.get('/register',(req,res,next) => {
                                         serviceList:serviceList
             });
         })
-
     });
 });
 
@@ -65,34 +72,6 @@ app.use('/register',(req,res,next) => {
     console.log(req.body);
     next();
 });
-
-// TODO: remove code block
-// app.post('/register',(req,res,next) => {
-//     // if (req.method == 'POST' && req.body != null) {
-//     if (req.body != null) {
-//         api.getAccessToken((err,token) => {
-//             console.log(tempID);
-//             api.fetchUserInfo(token,'',tempID,(err,data) => {
-//                 if (err != null || data == null || data == undefined) {
-//                     console.log('Error feteching user info: '+err);
-//                 }
-//                 else {
-//                     queue.addCustomerToQueue({
-//                         // 'nickname':data.nickname,
-//                         'openid':data.openid,
-//                         'serviceType':req.body.serviceType,
-//                         // 'estimatedTime':50
-//                     },(err)=>{
-//                         console.log(err);
-//                     });
-//                 }
-//                 res.end();
-//                 next();
-//             });
-//         });
-//     }
-//     else next();
-// });
 
 app.get('/monitor',(req,res,next) => {
     var options = {
@@ -116,8 +95,6 @@ app.use('/',(req,res,next) => {
 
 // Deal with WeChat message/event call
 app.post('/', (req,res,next) => {
-    // if (req.method == 'POST' && req.url == '/' && req.headers['content-type'] == 'text/xml') {
-    // if (req.method == 'POST' && req.headers['content-type'] == 'text/xml') {
     if (req.headers['content-type'] == 'text/xml') {
         var parseString = require("xml2js").parseString;
         parseString(req.body, function (err, data) {
@@ -170,7 +147,7 @@ function eventSwitch(data,res) {
 function clickEventHandler(data,res) {
     switch (data.EventKey[0]) {
         case 'V1001_QUEUE_QUERY':
-            queue.totalEstimatedTime(data.FromUserName,(err,totalInfo) => {
+            queue.totalEstimatedTime({openid:data.FromUserName[0]},(err,totalInfo) => {
             const reply = '在您之前有'+totalInfo.totalCustomer+'人，预计等待时间约'+totalInfo.totalETime+'分钟';
             res.end('<xml>'+
             `<ToUserName><![CDATA[${data.FromUserName}]]></ToUserName>`+
