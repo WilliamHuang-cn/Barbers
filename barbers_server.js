@@ -169,7 +169,7 @@ function clickEventHandler(data,res) {
                 '<item>'+
                     '<Title><![CDATA[点我理发！]]></Title>'+
                     '<Description><![CDATA[发送到发送短发]]></Description>'+
-                    '<Url><![CDATA[http://47.92.109.146/register?openid='+data.FromUserName+']]></Url>'+
+                    '<Url><![CDATA[http://www.wtmoose.com/register?openid='+data.FromUserName+']]></Url>'+
                 '</item>'+
             '</Articles>'+
             '</xml>');
@@ -185,7 +185,7 @@ function clickEventHandler(data,res) {
                 '<item>'+
                     '<Title><![CDATA[点我查看队列]]></Title>'+
                     '<Description><![CDATA[这里没有描述 :P]]></Description>'+
-                    '<Url><![CDATA[http://47.92.109.146/monitor'+']]></Url>'+
+                    '<Url><![CDATA[http://www.wtmoose.com/monitor'+']]></Url>'+
                 '</item>'+
             '</Articles>'+
             '</xml>');
