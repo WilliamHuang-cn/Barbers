@@ -210,11 +210,3 @@ function textHandler(data,res) {
         }
     });
 }
-
-queue.on('queueUpdated', (info) => {
-    if (info && info.action == 'push') {
-        api.sendMessageToUser(info.customer.openid,`您已经在队伍中。项目：${info.customer.serviceName}。回复lkdl离开队列`,(err) => {
-            if (err) console.log(err);
-        });
-    }
-});
