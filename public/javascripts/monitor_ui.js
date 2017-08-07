@@ -28,10 +28,6 @@ $(document).ready(function () {
     var chosenCus = '';
     socket.emit('monitorQueue');
 
-    // setInterval(function() {
-    //     socket.emit('monitorQueue');
-    // }, 1000);
-
     socket.on('queueInfo',(queueInfo) => {
         $('#queue_list').html('');
         queueInfo.forEach((customer,index) => {
@@ -50,6 +46,10 @@ $(document).ready(function () {
             alert(result.msg);
         }
         socket.emit('monitorQueue');
+    });
+
+    socket.on('updateQueue',() => {
+        socket.emit('monitorQueue')
     });
 
 	$('#iosMask').on('click', hideActionSheet);

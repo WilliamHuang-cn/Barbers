@@ -57,9 +57,10 @@
         </div>
         <div class="weui-cell__bd">
             <select class="weui-select" name="sex" id="sex">
+                <% customer.sex == customer.sex || '男'%>
                 <% if (customer.sex == '男') {%>
                     <option selected="selected" value="男">男</option>
-                <option value="女">女</option>
+                    <option value="女">女</option>
                 <% } else {%>
                     <option value="男">男</option>
                     <option selected="selected" value="女">女</option>
