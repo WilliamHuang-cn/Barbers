@@ -24,7 +24,7 @@ $(document).ready(function () {
         $('#submit').removeClass('weui-btn_loading');
         $('#loader').remove();
         if (result.success) {
-            alert('Success! You are in queue now!');
+            // alert('Success! You are in queue now!');
             window.location.href = $('#redirect_url').text() || 'success.html';
         } else {
             alert(result.msg);
