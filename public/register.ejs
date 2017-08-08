@@ -57,13 +57,12 @@
         </div>
         <div class="weui-cell__bd">
             <select class="weui-select" name="sex" id="sex">
-                <% customer.sex == customer.sex || '男'%>
-                <% if (customer.sex == '男') {%>
-                    <option selected="selected" value="男">男</option>
-                    <option value="女">女</option>
-                <% } else {%>
+                <% if (customer.sex == '女') {%>
                     <option value="男">男</option>
                     <option selected="selected" value="女">女</option>
+                <% } else {%>
+                    <option selected="selected" value="男">男</option>
+                    <option value="女">女</option>
                 <% }%>
             </select>
         </div>
@@ -216,8 +215,8 @@
 <div class="weui-cells weui-cells_form">
     <div class="weui-cell">
         <div class="weui-cell__bd">
-            <textarea class="weui-textarea" placeholder="请把您的特殊需求写在这里" rows="5" id="remarks"><%= totalInfo.remark%></textarea>
-            <div class="weui-textarea-counter"><span>0</span>/200</div>
+            <textarea class="weui-textarea" placeholder="请把您的特殊需求写在这里" rows="3" id="remarks"><%= totalInfo.remark%></textarea>
+            <!-- <div class="weui-textarea-counter"><span>0</span>/200</div> -->
         </div>
     </div>
 </div>

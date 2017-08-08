@@ -16,7 +16,6 @@ function mediaBoxElement(customer,index) {
 function hideActionSheet() {
     $('#iosActionsheet').removeClass('weui-actionsheet_toggle');
     $('#iosMask').fadeOut(200);
-    chosenCus = '';
 }
 
 function showActionSheet() {
@@ -70,5 +69,6 @@ $(document).ready(function () {
 
     $('#modify').on('click',() => {
         hideActionSheet();
+        window.location.href = `./register?monitoring=yes&openid=${chosenCus}`
     });
 });

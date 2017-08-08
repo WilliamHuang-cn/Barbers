@@ -40,8 +40,8 @@ app.get('/register',(req,res,next) => {
     var monitor = req.query.monitoring;
     var redirection = '';
     var customer = {};
-    if (monitor == 'yes') {
-        redirection = './monitor';
+    if (monitor == 'yes') redirection = './monitor';
+    if (!id) {
         id = Date.now();
         customerNum ++;
         customer = {
