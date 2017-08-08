@@ -139,6 +139,15 @@ function eventSwitch(data,res) {
         case 'VIEW':
             viewEventHandler(data,res);
             break;
+        case 'subscribe':
+            res.end('<xml>'+
+            `<ToUserName><![CDATA[${data.FromUserName}]]></ToUserName>`+
+            `<FromUserName><![CDATA[${data.ToUserName}]]></FromUserName>`+
+            `<CreateTime><![CDATA[${data.CreateTime}]]></CreateTime>`+
+            '<MsgType><![CDATA[text]]></MsgType>'+
+            `<Content><![CDATA[欢迎关注晓晨美发厅！\n请回复任意内容获取菜单]]></Content>`+
+            '</xml>');
+            break;
         default:
             res.end('success');
     }
