@@ -9,7 +9,7 @@ $(document).ready(function () {
         var service = $('#service_type').val();
         var remark = $('#remarks').val();
         var id = $('#wechat_openid').text();
-        var buttonText = $('#submit').val();
+        var buttonText = $('#submit').text();
         if (name != '' && tel != '') {
             $('#submit').addClass('weui-btn_loading');
             $('#submit').html('<i class="weui-loading" id="loader"></i>'+buttonText);
@@ -42,8 +42,4 @@ $(document).ready(function () {
         }
     });
 
-    socket.on('serviceTypes',(result) => {
-        // TODO: implement ui rendering
-
-    });
 });
