@@ -38,9 +38,17 @@ $(document).ready(function () {
         });
     });
 
-    socket.on('removeResult',(result) => {
+    socket.on('operationResult',(result) => {
         if (result.success) {
-            alert('successfully remove customer');
+            switch (result.action) {
+                case 'remove':
+                    alert('Successfully remove customer');
+                    break;
+                case 'moveInQueue':
+                    alert('Successfully moved customer in queue');
+                    break;
+                default:
+            }
         } else {
             alert(result.msg);
         }
@@ -61,10 +69,12 @@ $(document).ready(function () {
 
     $('#move_up').on('click',() => {
         hideActionSheet();
+        socket.emit('moveCustomerInQueue',{openid:chosenCus,delta:-1});
     });
 
     $('#move_down').on('click',() => {
         hideActionSheet();
+        socket.emit('moveCustomerInQueue',{openid:chosenCus,delta:1});
     });
 
     $('#modify').on('click',() => {

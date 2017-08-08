@@ -24,13 +24,19 @@ socket.io事件表：
 
 4. 浏览器发出'removeCustomer'事件，向服务端请求删除顾客
 
- --> 服务端侦听'removeCustomer'事件，根据openid删除顾客，发出'removeResult'事件
+ --> 服务端侦听'removeCustomer'事件，根据openid删除顾客，发出'operationResult'事件
 
- --> 浏览器侦听'removeResult'事件，把结果返回给用户
+ --> 浏览器侦听'operationResult'事件，把结果返回给用户
 
 5. 服务器发出'queueUpdate'事件，提示客户端更新
 
  --> 浏览器侦听'queueUpdate'事件，触发发送'monitorQueue'事件
+
+6. 浏览器发出'moveCustomerInQueue'事件，向服务端请求移动顾客
+
+ --> 服务端侦听'moveCustomerInQueue'事件，根据openid和delta移动顾客，发出'operationResult'事件
+
+ --> 浏览器侦听'operationResult'事件，把结果返回给用户
 
 ## barber_queue.js
 queue记录当前排队的顾客（以customer对象保存在内存中）
