@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
     });
 
-    socket.on('joinResult',(result) => {
+    socket.on('joinResult',function(result) {
         $('#submit').removeClass('weui-btn_loading');
         $('#loader').remove();
         if (result.success) {
@@ -31,7 +31,7 @@ $(document).ready(function () {
         }
     });
 
-    socket.on('ModifyResult',(result) => {
+    socket.on('ModifyResult',function(result) {
         $('#submit').removeClass('weui-btn_loading');
         $('#loader').remove();
         if (result.success) {

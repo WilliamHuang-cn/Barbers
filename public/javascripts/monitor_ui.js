@@ -27,18 +27,18 @@ $(document).ready(function () {
     var chosenCus = '';
     socket.emit('monitorQueue');
 
-    socket.on('queueInfo',(queueInfo) => {
+    socket.on('queueInfo',function (queueInfo) {
         $('#queue_list').html('');
-        queueInfo.forEach((customer,index) => {
+        queueInfo.forEach(function (customer,index) {
             $('#queue_list').append(mediaBoxElement(customer,index));
-            $(`[index=${index}]`).on('click',() => {
+            $(`[index=${index}]`).on('click',function () {
                 chosenCus = $(`[index=${index}]`).attr('openid');
                 showActionSheet();
             });
         });
     });
 
-    socket.on('operationResult',(result) => {
+    socket.on('operationResult',function (result) {
         if (result.success) {
             switch (result.action) {
                 case 'remove':
@@ -55,29 +55,29 @@ $(document).ready(function () {
         socket.emit('monitorQueue');
     });
 
-    socket.on('updateQueue',() => {
+    socket.on('updateQueue',function () {
         socket.emit('monitorQueue')
     });
 
 	$('#iosMask').on('click', hideActionSheet);
 	$('#iosActionsheetCancel').on('click', hideActionSheet);
 
-    $('#delete').on('click',() => {
+    $('#delete').on('click',function () {
         hideActionSheet();
         socket.emit('removeCustomer',{openid:chosenCus});
     });
 
-    $('#move_up').on('click',() => {
+    $('#move_up').on('click',function () {
         hideActionSheet();
         socket.emit('moveCustomerInQueue',{openid:chosenCus,delta:-1});
     });
 
-    $('#move_down').on('click',() => {
+    $('#move_down').on('click',function () {
         hideActionSheet();
         socket.emit('moveCustomerInQueue',{openid:chosenCus,delta:1});
     });
 
-    $('#modify').on('click',() => {
+    $('#modify').on('click',function () {
         hideActionSheet();
         window.location.href = `./register?monitoring=yes&openid=${chosenCus}`
     });
